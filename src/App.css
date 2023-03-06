@@ -1,4 +1,15 @@
 .App {
+
+}
+
+.card {
+  width: 100px;
+  padding: 50px 50px;
+  border: 2px solid red;
+  cursor: grab;
+}
+
+.easy {
   text-align: center;
   display: flex;
   height: 100vh;
@@ -8,9 +19,16 @@
   gap: 10px;
 }
 
-.card {
-  width: 100px;
-  padding: 50px 50px;
+.board {
   border: 2px solid red;
-  cursor: grab;
+  border-radius: 5px;
+  height: 350px;
+  width: 300px;
+}
+
+.item {
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 5px;
 }
