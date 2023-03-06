@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 interface ICard {
@@ -9,34 +9,58 @@ interface ICard {
 
 function App() {
 
-  const cards = [
-    {id: 1, order: 1, label: "FIRST"},
-    {id: 2, order: 2, label: "SECOND"},
-    {id: 3, order: 3, label: "THIRD"},
-    {id: 4, order: 4, label: "FOURTH"}
-  ]
+  const [cardsList, setCardsList] = useState<ICard[]>(
+    [
+      {id: 1, order: 1, label: "FIRST"},
+      {id: 2, order: 2, label: "SECOND"},
+      {id: 3, order: 3, label: "THIRD"},
+      {id: 4, order: 4, label: "FOURTH"}
+    ]
+  )
+  const [currentCard, setCurrentCard] = useState<ICard | null>(null)
 
   const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, card: ICard) => {
-    console.log('dragStart', card);
-    
+    setCurrentCard(card)
   }
   const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    
+    const target = e.target as HTMLDivElement;
+    target.style.background = 'white'
   }
   const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    
+    const target = e.target as HTMLDivElement;
+    target.style.background = 'white'
   }
   const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault()
+    const target = e.target as HTMLDivElement;
+    target.style.background = 'lightgray'
   }
   const dropHandler = (e: React.DragEvent<HTMLDivElement>, card: ICard) => {
     e.preventDefault()
-    console.log('DROP', card);
+    const target = e.target as HTMLDivElement;
+    target.style.background = 'white'
+    setCardsList(cardsList.map((element: ICard) => {
+      if(element.id === card.id){
+        return {...element, order: currentCard!.order}
+      }
+      if(element.id === currentCard!.id){
+        return {...element, order: card.order}
+      }
+      return element
+    }))
+  }
+
+  const sortCards = (a: ICard, b: ICard) => {
+    if(a.order > b.order) {
+      return 1
+    } else {
+      return -1
+    }
   }
 
   return (
     <div className="App">
-      {cards.map(card => (
+      {cardsList.sort(sortCards).map(card => (
         <div key={card.id} className='card'
           draggable={true}
           onDragStart={(e) => dragStartHandler(e, card)}
