@@ -1,24 +1,53 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+interface ICard {
+  id: number
+  order: number
+  label: string
+}
+
 function App() {
+
+  const cards = [
+    {id: 1, order: 1, label: "FIRST"},
+    {id: 2, order: 2, label: "SECOND"},
+    {id: 3, order: 3, label: "THIRD"},
+    {id: 4, order: 4, label: "FOURTH"}
+  ]
+
+  const dragStartHandler = (e: React.DragEvent<HTMLDivElement>, card: ICard) => {
+    console.log('dragStart', card);
+    
+  }
+  const dragLeaveHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    
+  }
+  const dragEndHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    
+  }
+  const dragOverHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault()
+  }
+  const dropHandler = (e: React.DragEvent<HTMLDivElement>, card: ICard) => {
+    e.preventDefault()
+    console.log('DROP', card);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      {cards.map(card => (
+        <div key={card.id} className='card'
+          draggable={true}
+          onDragStart={(e) => dragStartHandler(e, card)}
+          onDragLeave={(e) => dragLeaveHandler(e)}
+          onDragEnd={(e) => dragEndHandler(e)}
+          onDragOver={(e) => dragOverHandler(e)}
+          onDrop={(e) => dropHandler(e, card)}
         >
-          Learn React
-        </a>
-      </header>
+          {card.label}
+        </div>
+      ))}
     </div>
   );
 }
